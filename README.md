@@ -155,12 +155,8 @@ roslaunch all_world gazebo_spawn.launch
 键入命令后将启动gazebo，gazebo启动完成后可以看到界面中显示的场景模型</br>
 点击左上角files标签，选择save world as ，选择worlds文件夹，保存世界文件为workstation.world对原有文件进行替换。
 
-### 仿真环境启动与SLAM建图
-仿真环境与SLAM建图分以下两个操作对象：</br>
-- turtlebot3
-- AGV移动平台
-
-### turtlebot3版本
+### 仿真环境启动与SLAM建图导航（turtlebot3 版本）
+##### turtlebot3 建图
 首先在.bahrc添加如下代码
 ```bash
 export TURTLEBOT3_MODEL=${TB3_MODEL}
@@ -168,59 +164,28 @@ export TURTLEBOT3_MODEL=waffle_pi
 export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/turtlebot/src/turtlebot3/turtlebot3_gazebo_plugin/build
 export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/turtlebot/src/turtlebot3/turtlebot3_gazebo_plugin/models
 ```
-
 打开终端在终端中键入如下命令更新终端环境
 ```bash
 source ~/.bashrc
 ```
-
 启动仿真世界并加载turtlebot3机器人模型
 ```bash
 roslaunch all_world world_gazebo_turtlebot.launch
 ```
-
 启动SLAM建图算法
 ```bash
 roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping
 ```
-
 启动远程控制
 ```bash
 roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
 ```
-
 保存地图
 ```bash
 rosrun map_server map_saver -f ~/map
 ```
 
-### AGV 移动平台版本
-启动仿真世界并加载AGV移动平台机器人模型
-```bash
-roslaunch cobot_moveit_config demo_gazebo.launch
-```
-
-启动SLAM建图算法
-```bash
-roslaunch turtlebot3_slam agv_slam.launch
-```
-
-启动远程控制
-```bash
-roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
-```
-
-保存地图
-```bash
-rosrun map_server map_saver -f ~/map
-```
-
-### 仿真环境启动与导航
-仿真环境启动与导航以下两个操作对象：
-- turtlebot3
-- AGV移动平台
-
-##### turtlebot3 版本
+##### turtlebot3 导航
 启动仿真环境并加载turtlebot3机器人模型
 ```bash
 roslaunch all_world world_gazebo_turtlebot.launch
@@ -230,18 +195,53 @@ roslaunch all_world world_gazebo_turtlebot.launch
 roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml
 ```
 
-##### AGV 移动平台版本
+### 仿真环境启动与SLAM建图导航（AGV 移动机械臂版本）
+创建场景模型，并保存到<code>~/hg_ws/src/workstation/all_world/worlds/workstation_(工号).world</code>
+
+根据<code>~/hg_ws/src/workstation/all_world/launch/workstation_demo.launch</code>路径下的workstation_demo.launch作为模板，按照workstation_(工号).launch命名格式进行命名
+
+修改workstation_(工号).launch文件中的参数，调用workstation_(工号).world模型
+
+修改<code>～/hg_ws/src/workstation/cobot_moveit_config/launch/demo_gazebo.launch</code>文件中的demo_gazebo.launch参数，参数如下：
+```bash
+  <!-- launch the gazebo simulator and spawn the robot -->
+  <include file="$(find all_world)/launch/workstation_demo.launch" >
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+    <arg name="urdf_path" value="$(arg urdf_path)"/>
+  </include>
+```
+把workstation_demo.launch改为workstation_(工号).launch。
+
+##### AGV建图
+启动仿真世界并加载AGV移动平台机器人模型
+```bash
+roslaunch cobot_moveit_config demo_gazebo.launch
+```
+启动SLAM建图算法
+```bash
+roslaunch turtlebot3_slam agv_slam.launch
+```
+启动远程控制
+```bash
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+```
+保存地图
+```bash
+rosrun map_server map_saver -f ~/map
+```
+
+##### AGV导航
 启动仿真环境并加载AGV移动平台机器人模型
 ```bash
 roslaunch cobot_moveit_config demo_gazebo.launch
 ```
-
 启动导航
 ```bash
-roslaunch turtlebot3_navigation agv_navigation.launch
+roslaunch turtlebot3_navigation agv_navigation.launch map_file:=$HOME/map.yaml
 ```
 
-##### cobot 7轴机械臂规划
+### cobot 7轴机械臂规划
 启动仿真环境并加载rviz motion planning，此时通过rviz交互式可以实现对机械臂的规划与控制
 ```bash
 roslaunch cobot_moveit_config demo_gazebo.launch
@@ -258,12 +258,6 @@ rosrun motion_control cobot_motion.py
 ```bash
 roslaunch cobot_moveit_config demo_gazebo.launch
 ```
-
-启动远程控制
-```bash
-roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
-```
-
 启动视觉识别脚本
 ```bash
 rosrun opencv_object_tracking object_filter_orientation1 
