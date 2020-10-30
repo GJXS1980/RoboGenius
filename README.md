@@ -1,18 +1,18 @@
 # 功能包介绍
 人工智能仿真平台的功能包都放置在名为workstation的文件夹中,文件夹含有以下功能包
 ```bash
-- agv_cobot                                               (cobot 7轴机械臂描述文件功能包)
-- agv_vehicle                                          （AGV 移动底盘描述文件功能包）
-- all_world                                               （世界描述文件功能包）
-- cobot_moveit_config                            （AGV 移动底盘与cobot 机械臂的moveit配置描述文件功能包）
-- gazebo-pkgs                                        （gazebo夹抓修复插件功能包）
-- general-message-pkgs                        （gazebo夹抓修复插件附带消息功能包）
-- motion_control                                     （基于python调用move_group控制机械臂功能包）
-- object_detection_2d                            （基于HSV颜色识别与抓取功能包）
-- realsense2_description                       （realsense2的描述文件功能包）
-- realsense_plugin                                 （realsense插件功能包）
-- scara_ws                                             （带scara机械臂工作台描述文件功能包）
-- turtlebot3                                              （turtlebot3相关功能包）
+- agv_cobot                (cobot 7轴机械臂描述文件功能包)
+- agv_vehicle             （AGV 移动底盘描述文件功能包）
+- all_world               （世界描述文件功能包）
+- cobot_moveit_config     （AGV 移动底盘与cobot 机械臂的moveit配置描述文件功能包）
+- gazebo-pkgs             （gazebo夹抓修复插件功能包）
+- general-message-pkgs    （gazebo夹抓修复插件附带消息功能包）
+- motion_control          （基于python调用move_group控制机械臂功能包）
+- object_detection_2d     （基于HSV颜色识别与抓取功能包）
+- realsense2_description  （realsense2的描述文件功能包）
+- realsense_plugin        （realsense插件功能包）
+- scara_ws                （带scara机械臂工作台描述文件功能包）
+- turtlebot3              （turtlebot3相关功能包）
 ```
 
 ### agv_cobot 功能包
